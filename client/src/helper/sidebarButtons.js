@@ -9,7 +9,7 @@ export const sidebarButtons = [
 		id: 1,
 		title: "All Rooms",
 		size: "md",
-		variant: "primary",
+		variant: "info",
 		handler: allRoomsHandler,
 	},
 	{
@@ -21,7 +21,7 @@ export const sidebarButtons = [
 	},
 	{
 		id: 3,
-		title: "User Booked Room",
+		title: "User Booked Rooms",
 		size: "md",
 		variant: "danger",
 		handler: userBookedRoomsHandler,

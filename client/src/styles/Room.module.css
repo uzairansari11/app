@@ -1,0 +1,59 @@
+/* RoomCard.module.css */
+.roomCard {
+  width: 300px;
+  border: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.roomCard:hover {
+  transform: scale(1.02);
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  
+}
+
+.roomTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.roomInfo,
+.availability,
+.dateTimeInput {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.icon {
+  font-size: 1.2rem;
+  margin-right: 6px;
+}
+
+.available {
+  color: #28a745;
+}
+
+.unavailable {
+  color: #dc3545;
+}
+
+.dateInput {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 12px;
+  width: 100%;
+}
+
+.bookButton {
+  margin-top: 15px;
+  width: 100%;
+}

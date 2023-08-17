@@ -1,3 +1,17 @@
 .container {
-  background: linear-gradient(90deg, rgb(216, 215, 227) 0%, rgb(245, 226, 222) 35%, rgb(192, 199, 218) 100%);
+	top: 0;
+	height: 100vh;
+	position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url(https://www.j360.info/static/website/img/sepao_cover.svg);
+	background-position: center center;
+	background-repeat: no-repeat;
+	object-fit: cover;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.content {
+	text-align: center;
 }
