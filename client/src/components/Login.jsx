@@ -1,16 +1,24 @@
-import ButtonComponent from "./ButtonComponent";
-import styles from "../styles/Login.module.css";
 import React from "react";
+import ButtonComponent from "./ButtonComponent"; // Assuming this import is correct
+import styles from "../styles/Login.module.css"; // Assuming this import is correct
 
 const Login = () => {
+	const handleGoogleLogin = async () => {
+		window.location.href = "http://localhost:8080/auth/google";
+	};
+
 	return (
 		<div className={styles.container}>
-			<div >
-				<h1 className="font-family-poppins fs-3 text-white mb-5 ">
+			<div>
+				<h1 className="font-family-poppins fs-3 text-white mb-5">
 					Streamline Your Meeting Room Management
 				</h1>
 				<div className="d-flex flex-column justify-content-center gap-4 m-auto w-50">
-					<ButtonComponent title={"Login With Google"} variant="danger" />
+					<ButtonComponent
+						title={"Login With Google"}
+						variant="danger"
+						onClick={handleGoogleLogin}
+					/>
 					<ButtonComponent title={"Login With Office 365"} variant="primary" />
 				</div>
 			</div>

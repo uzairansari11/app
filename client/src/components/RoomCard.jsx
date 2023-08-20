@@ -5,43 +5,44 @@ import {
 	BsCheckCircleFill,
 	BsXCircleFill,
 	BsPersonFill,
-} from "react-icons/bs"; // Import icons
-import styles from "../styles/Room.module.css"; // Import custom CSS module
+} from "react-icons/bs";
+import styles from "../styles/Room.module.css";
 
-const RoomCard = () => {
-	const [isAvailable, setIsAvailable] = useState(true);
+const RoomCard = ({ name, capacity, status }) => {
+	
+	const [bookingStart, setBookingStart] = useState("");
+	const [bookingEnd, setBookingEnd] = useState("");
+
 	const currentDate = new Date();
 	const formattedDate = currentDate.toISOString().slice(0, 16);
 
 	const handleBooking = () => {
-		// Simulate room booking logic
-		if (isAvailable) {
-			setIsAvailable(false);
-			console.log("Room booked!");
-		} else {
-			console.log("Room not available for booking.");
-		}
+		// if (status && bookingStart && bookingEnd) {
+		// 	setIsAvailable(false);
+		// 	console.log("Room booked!");
+		// } else {
+		// 	console.log("Room not available for booking.");
+		// }
+	};
+
+	const handleStartTimeChange = (e) => {
+		const selectedStart = new Date(e.target.value);
+		const selectedEnd = new Date(selectedStart);
+		selectedEnd.setDate(selectedEnd.getDate() + 15);
+		setBookingStart(selectedStart.toISOString().slice(0, 16));
+		setBookingEnd(selectedEnd.toISOString().slice(0, 16));
 	};
 
 	return (
 		<Card className={styles.roomCard}>
-			<div className={styles.imageContainer}>
-				<div className={styles.imageWrapper}>
-					<Card.Img
-						className={styles.roomImage}
-						variant="top"
-						src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80"
-						alt="Room"
-					/>
-				</div>
-			</div>
+			<div className={styles.imageContainer}>{/* ... */}</div>
 			<Card.Body>
-				<Card.Title className={styles.roomTitle}>Meeting Room-1</Card.Title>
+				<Card.Title className={styles.roomTitle}>{name}</Card.Title>
 				<Card.Text className={styles.roomInfo}>
-					<BsPersonFill className={styles.icon} /> 19 Seats
+					<BsPersonFill className={styles.icon} /> {capacity} Seats
 				</Card.Text>
 				<Card.Text className={styles.availability}>
-					{isAvailable ? (
+					{status ? (
 						<span className={styles.available}>
 							<BsCheckCircleFill className={styles.icon} /> Available
 						</span>
@@ -52,21 +53,31 @@ const RoomCard = () => {
 					)}
 				</Card.Text>
 				<div className={styles.dateTimeInput}>
-					<BsCalendarEvent className={styles.icon} />{" "}
+					<BsCalendarEvent className={styles.icon} /> Start Time:{" "}
 					<input
 						type="datetime-local"
 						min={formattedDate}
 						className={styles.dateInput}
-						onChange={(e) => console.log(e.target.value)}
+						onChange={handleStartTimeChange}
+					/>
+				</div>
+				<div className={styles.dateTimeInput}>
+					<BsCalendarEvent className={styles.icon} /> End Time:{" "}
+					<input
+						type="datetime-local"
+						min={bookingStart}
+						max={bookingEnd}
+						className={styles.dateInput}
+						onChange={(e) => setBookingEnd(e.target.value)}
 					/>
 				</div>
 				<Button
 					className={styles.bookButton}
-					variant={isAvailable ? "primary" : "danger"}
+					variant={status ? "primary" : "danger"}
 					onClick={handleBooking}
-					disabled={!isAvailable}
+					disabled={!status || !bookingStart || !bookingEnd}
 				>
-					{isAvailable ? "Book Now" : "Not Available"}
+					{status ? "Book Now" : "Not Available"}
 				</Button>
 			</Card.Body>
 		</Card>

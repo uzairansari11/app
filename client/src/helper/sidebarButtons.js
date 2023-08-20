@@ -3,7 +3,6 @@ import {
 	availableRoomsHandler,
 	userBookedRoomsHandler,
 } from "./sidebarHandlers";
-
 export const sidebarButtons = [
 	{
 		id: 1,
@@ -11,6 +10,7 @@ export const sidebarButtons = [
 		size: "md",
 		variant: "info",
 		handler: allRoomsHandler,
+		path: "/dashboard",
 	},
 	{
 		id: 2,
@@ -18,6 +18,7 @@ export const sidebarButtons = [
 		size: "md",
 		variant: "success",
 		handler: availableRoomsHandler,
+		path: "available",
 	},
 	{
 		id: 3,
@@ -25,5 +26,6 @@ export const sidebarButtons = [
 		size: "md",
 		variant: "danger",
 		handler: userBookedRoomsHandler,
+		path: "booked",
 	},
 ];

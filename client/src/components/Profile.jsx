@@ -1,8 +1,24 @@
 import React from "react";
 import { Dropdown, Image } from "react-bootstrap";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const Profile = () => {
-	const name = "Uzair Ansari"; // Capitalized the name for consistency
+const Profile = ({ email, profilePic, name }) => {
+	const handleLogout = async () => {
+		try {
+			// Send a request to the logout endpoint on the server
+			await axios.get("http://localhost:8080/auth/logout");
+
+			// Remove the authToken cookie
+			Cookies.remove("authToken");
+
+			// Perform any additional cleanup or redirection as needed
+			// For example, you can redirect the user to the login page
+			window.location.href = "/login";
+		} catch (error) {
+			console.error("Error during logout:", error);
+		}
+	};
 
 	return (
 		<Dropdown>
@@ -11,7 +27,7 @@ const Profile = () => {
 				className="w-100 px-4 d-flex align-items-center"
 			>
 				<Image
-					src="https://images.unsplash.com/photo-1483726234545-481d6e880fc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+					src={profilePic}
 					alt="Profile"
 					className="rounded-circle mr-3"
 					width="50"
@@ -21,7 +37,9 @@ const Profile = () => {
 			</Dropdown.Toggle>
 			<Dropdown.Menu className="text-center w-100 mt-1 border-0 shadow">
 				<Dropdown.Item className="text-primary">Profile</Dropdown.Item>
-				<Dropdown.Item className="text-danger">Logout</Dropdown.Item>
+				<Dropdown.Item className="text-danger" onClick={handleLogout}>
+					Logout
+				</Dropdown.Item>
 			</Dropdown.Menu>
 		</Dropdown>
 	);
