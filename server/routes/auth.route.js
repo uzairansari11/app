@@ -7,19 +7,20 @@ const { UserModel } = require("../models/user.model");
 
 const authRoute = express.Router();
 
-// Configure session middleware
-authRoute.use(
-	session({
-		secret: process.env.SECRET_KEY,
-		resave: true,
-		saveUninitialized: true,
-	})
-);
-// Initialize Passport
+const sessionConfig = {
+	secret: process.env.SECRET_KEY,
+	resave: true,
+	saveUninitialized: true,
+
+	cookie: {
+		maxAge: 24 * 60 * 60 * 1000,
+	},
+};
+authRoute.use(session(sessionConfig));
+
 authRoute.use(passport.initialize());
 authRoute.use(passport.session());
 
-// Configure the Google Strategy
 passport.use(
 	new GoogleStrategy(
 		{
@@ -31,7 +32,7 @@ passport.use(
 			try {
 				const email = profile._json.email;
 				let user = await UserModel.findOne({ email });
-
+				console.log(accessToken, "accessToken", refreshToken, "refreshToken");
 				if (!user) {
 					const name = profile._json.name;
 					const profilePic =
@@ -42,6 +43,7 @@ passport.use(
 						name,
 						email,
 						profilePic,
+						refreshToken: refreshToken,
 					});
 					await user.save();
 				}
@@ -53,29 +55,34 @@ passport.use(
 	)
 );
 
-// Serialize user data into the session
 passport.serializeUser((user, done) => {
 	done(null, user);
 });
 
-// Deserialize user data from the session
 passport.deserializeUser((user, done) => {
 	done(null, user);
 });
 
-// Define routes
 authRoute.get(
 	"/google",
-	passport.authenticate("google", { scope: ["profile", "email"] })
+	passport.authenticate("google", {
+		scope: [
+			"profile",
+			"email",
+			"https://www.googleapis.com/auth/calendar.events",
+		], // Add the Google Calendar scope
+		accessType: "offline", // Request offline access
+	})
 );
 
 authRoute.get(
 	"/google/callback",
 	passport.authenticate("google", { failureRedirect: "/" }),
 	(req, res) => {
-		// Redirect or handle successful authentication
-		const user = req.user; // Access user data from the request object
-		const token = jwt.sign({ user }, process.env.SECRET_KEY);
+		const user = req.user;
+		const token = jwt.sign({ user }, process.env.SECRET_KEY, {
+			expiresIn: "1d",
+		});
 		const plainUser = user.toObject();
 
 		const tokenAndUserData = {
@@ -83,47 +90,13 @@ authRoute.get(
 			...plainUser,
 		};
 
-		// Set the token as a cookie
 		res.cookie("authToken", JSON.stringify(tokenAndUserData), {
 			maxAge: 24 * 60 * 60 * 1000,
+			secure: true,
 		});
 
 		res.redirect(`http://localhost:3000/dashboard`);
 	}
 );
-// authRoute.get("/logout", async (req, res) => {
-// 	try {
-// 		// Get the token from the cookie
-// 		console.log(req.cookies, "my ccc");
-// 		const authTokenCookie = req.cookies.authToken;
-
-// 		if (!authTokenCookie) {
-// 			return res
-// 				.status(400)
-// 				.json({ ok: false, message: "No authToken cookie found" });
-// 		}
-
-// 		const tokenAndUserData = JSON.parse(authTokenCookie);
-
-// 		const token = tokenAndUserData.token;
-
-// 		// Check if the token is already blacklisted
-// 		const isTokenBlacklisted = await BlacklistedTokenModel.exists({ token });
-
-// 		if (!isTokenBlacklisted) {
-// 			// Add the token to the blacklisted tokens collection
-// 			const newBlacklistedToken = new BlacklistedTokenModel({ token });
-// 			await newBlacklistedToken.save();
-// 		}
-
-// 		// Clear the authToken cookie
-// 		res.clearCookie("authToken");
-
-// 		return res.status(200).json({ ok: true, message: "Logout successful" });
-// 	} catch (error) {
-// 		console.error(error);
-// 		return res.status(500).json({ ok: false, message: error });
-// 	}
-// });
 
 module.exports = { authRoute };

@@ -5,7 +5,7 @@ return parsed token
 */
 import Cookies from "js-cookie";
 
-export const getToke = () => {
+export const getToken = () => {
 	const authToken = Cookies.get("authToken") || null;
 	if (authToken) {
 		const parsedData = JSON.parse(authToken).token;

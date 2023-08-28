@@ -5,8 +5,9 @@ export const TableComponent = ({ children }) => {
 		<Table striped bordered hover className="w-100">
 			<thead>
 				<tr>
-					<th>Room Name</th>
-					<th>Date</th>
+					<th>Room</th>
+					<th>Title</th>
+					<th>Description</th>
 					<th>Start Time</th>
 					<th>End Time</th>
 					<th>Action</th>

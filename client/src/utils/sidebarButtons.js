@@ -1,3 +1,5 @@
+import { BsFillBookmarkFill } from "react-icons/bs";
+import { LuHome } from "react-icons/lu";
 import {
 	allRoomsHandler,
 	availableRoomsHandler,
@@ -8,24 +10,21 @@ export const sidebarButtons = [
 		id: 1,
 		title: "All Rooms",
 		size: "md",
-		variant: "info",
+		variant: "primary",
 		handler: allRoomsHandler,
 		path: "/dashboard",
+		icon: <LuHome />,
+		iconSize: "20",
 	},
+
 	{
 		id: 2,
-		title: "Available Rooms",
-		size: "md",
-		variant: "success",
-		handler: availableRoomsHandler,
-		path: "available",
-	},
-	{
-		id: 3,
 		title: "User Booked Rooms",
 		size: "md",
-		variant: "danger",
+		variant: "info",
 		handler: userBookedRoomsHandler,
 		path: "booked",
+		icon: <BsFillBookmarkFill />,
+		iconSize: "20",
 	},
 ];

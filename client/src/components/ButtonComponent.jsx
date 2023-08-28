@@ -1,33 +1,45 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-
-const ButtonComponent = ({ title, onClick, variant, size, icon }) => {
-	const gradientColors = {
-		danger: ["#FF6B6B", "#FF8E53"],
-		primary: ["#2EC4B6", "#009E7F"],
-		secondary: ["#6A4E4E", "#985959"],
-		info: ["#8DA8B3", "#60839E"],
-		success: ["#76CE92", "#3FA063"],
-		warning: ["#FFD700", "#FFA500"],
-		dark: ["#343A40", "#343A40"],
-		light: ["#F8F9FA", "#F8F9FA"],
+const ButtonComponent = ({
+	title,
+	onClick,
+	variant,
+	size,
+	icon,
+	iconSize,
+	disabled,
+}) => {
+	const solidColors = {
+		danger: { background: "#980c41", text: "#fff" },
+		primary: { background: "#17539d", text: "#fff" },
+		secondary: { background: "#6A4E4E", text: "#fff" },
+		info: { background: "#27656d", text: "#fff" },
+		success: { background: "#194500", text: "#fff" },
+		warning: { background: "#FFD700", text: "#000" },
+		dark: { background: "#343A40", text: "#fff" },
+		light: { background: "#F8F9FA", text: "#000" },
 	};
 
-	const getGradientColors = gradientColors[variant] || ["#FF6B6B", "#FF8E53"];
+	const { background, text } = solidColors[variant] || solidColors.danger;
 
 	const buttonStyle = {
-		background: `linear-gradient(45deg, ${getGradientColors[0]}, ${getGradientColors[1]})`,
+		background: background,
 		border: "none",
-		color: "#fff",
+		color: text,
 		fontFamily: "Poppins",
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "space-between",
 		paddingLeft: "10px",
 		paddingRight: "10px",
-		padding: "15px",
-		cursor: "pointer", // Add cursor pointer for better interactivity
+		padding: "10px",
+		cursor: "pointer",
+	};
+
+	const iconStyle = {
+		fontSize: iconSize || 16,
+		marginLeft: "10px",
 	};
 
 	return (
@@ -37,11 +49,10 @@ const ButtonComponent = ({ title, onClick, variant, size, icon }) => {
 			onClick={onClick}
 			style={buttonStyle}
 			className="w-100"
+			disabled={disabled}
 		>
 			{title}
-			{icon && ( // Show icon only if it's passed
-				<span style={{ marginLeft: "10px" }}>{icon}</span>
-			)}
+			{icon && <span style={iconStyle}>{icon}</span>}
 		</Button>
 	);
 };

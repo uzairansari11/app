@@ -1,47 +1,47 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Dropdown, Image } from "react-bootstrap";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { AuthContext } from "../context/AuthContextApi";
+import UserProfileModal from "./UserProfileModal";
 
-const Profile = ({ email, profilePic, name }) => {
-	const handleLogout = async () => {
-		try {
-			// Send a request to the logout endpoint on the server
-			await axios.get("http://localhost:8080/auth/logout");
-
-			// Remove the authToken cookie
-			Cookies.remove("authToken");
-
-			// Perform any additional cleanup or redirection as needed
-			// For example, you can redirect the user to the login page
-			window.location.href = "/login";
-		} catch (error) {
-			console.error("Error during logout:", error);
-		}
-	};
-
+const Profile = ({ email, profilePic, name, role }) => {
+	const [showModal, setShowModal] = useState(false);
+	const openModal = () => setShowModal(true);
+	const closeModal = () => setShowModal(false);
+	const { handleLogout } = useContext(AuthContext);
 	return (
-		<Dropdown>
-			<Dropdown.Toggle
-				variant="outline-none"
-				className="w-100 px-4 d-flex align-items-center"
-			>
-				<Image
-					src={profilePic}
-					alt="Profile"
-					className="rounded-circle mr-3"
-					width="50"
-					height="50"
-				/>
-				<span className="text-dark font-weight-bold">{name}</span>
-			</Dropdown.Toggle>
-			<Dropdown.Menu className="text-center w-100 mt-1 border-0 shadow">
-				<Dropdown.Item className="text-primary">Profile</Dropdown.Item>
-				<Dropdown.Item className="text-danger" onClick={handleLogout}>
-					Logout
-				</Dropdown.Item>
-			</Dropdown.Menu>
-		</Dropdown>
+		<>
+			<Dropdown>
+				<Dropdown.Toggle
+					variant="outline-none"
+					className="w-100 px-4 d-flex align-items-center"
+				>
+					<Image
+						src={profilePic}
+						alt="Profile"
+						className="rounded-circle mr-3"
+						width="50"
+						height="50"
+					/>
+					<span className="text-dark font-weight-bold">{name}</span>
+				</Dropdown.Toggle>
+				<Dropdown.Menu className="text-center w-100 mt-1 border-0 shadow">
+					<Dropdown.Item className="text-primary" onClick={openModal}>
+						Profile
+					</Dropdown.Item>
+					<Dropdown.Item className="text-danger" onClick={() => handleLogout()}>
+						Logout
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown>
+			<UserProfileModal
+				show={showModal}
+				onHide={closeModal}
+				email={email}
+				profilePic={profilePic}
+				name={name}
+				role={role}
+			/>
+		</>
 	);
 };
 

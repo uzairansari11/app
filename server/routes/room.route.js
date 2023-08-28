@@ -1,5 +1,5 @@
 const express = require("express");
-const RoomModel = require("../models/room.model"); // Make sure to import your RoomModel
+const RoomModel = require("../models/room.model"); 
 
 const roomRouter = express.Router();
 

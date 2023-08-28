@@ -1,12 +1,10 @@
-import React from "react";
-import ButtonComponent from "./ButtonComponent"; // Assuming this import is correct
+import { FcGoogle } from "react-icons/fc";
 import styles from "../styles/Login.module.css"; // Assuming this import is correct
-
+import ButtonComponent from "./ButtonComponent"; // Assuming this import is correct
 const Login = () => {
 	const handleGoogleLogin = async () => {
 		window.location.href = "http://localhost:8080/auth/google";
 	};
-
 	return (
 		<div className={styles.container}>
 			<div>
@@ -16,10 +14,11 @@ const Login = () => {
 				<div className="d-flex flex-column justify-content-center gap-4 m-auto w-50">
 					<ButtonComponent
 						title={"Login With Google"}
-						variant="danger"
+						variant="light"
 						onClick={handleGoogleLogin}
+						icon={<FcGoogle />}
+						iconSize={25}
 					/>
-					<ButtonComponent title={"Login With Office 365"} variant="primary" />
 				</div>
 			</div>
 		</div>

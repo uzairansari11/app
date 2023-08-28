@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar } from "react-bootstrap";
-import Profile from "./Profile";
+import { AuthContext } from "../context/AuthContextApi";
 import "../styles/Custom.css";
 import Logo from "./Logo";
-import Cookies from "js-cookie";
+import Profile from "./Profile";
 
 export const NavbarComponent = () => {
 	const [userData, setUserData] = useState();
+	const { isAuthenticated } = useContext(AuthContext);
 	useEffect(() => {
 		const authToken = Cookies.get("authToken") || null;
 		if (authToken) {
@@ -18,13 +20,13 @@ export const NavbarComponent = () => {
 	return (
 		<Navbar
 			expand="lg"
-			className="d-flex custom-navbar p-0 m-0 justify-content-between px-3 "
+			className="d-flex custom-navbar p-0 m-0 justify-content-between px-5"
 		>
 			<Logo />
 			<div>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
-					<Profile {...userData} />
+					{isAuthenticated ? <Profile {...userData} /> : null}
 				</Navbar.Collapse>
 			</div>
 		</Navbar>
